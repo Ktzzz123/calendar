@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">calendar</string>
+    <string name="Back"><![CDATA[<-]]></string>
+    <string name="Next"><![CDATA[->]]></string>
+</resources>
