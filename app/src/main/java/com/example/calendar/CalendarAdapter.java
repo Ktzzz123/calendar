@@ -30,7 +30,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
            layoutParams.height = (int) (parent.getHeight()*0.166666666);
         else
             layoutParams.height = (int) parent.getHeight();
-        return new CalendarViewHolder(view, onItemListener);
+        return new CalendarViewHolder(view, onItemListener,days);
     }
 
     @Override
@@ -51,6 +51,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         return days.size();
     }
     public interface OnItemListener{
-        void onItemClick(int position, String dayText);
+        void onItemClick(int position, LocalDate date);
     }
 }
