@@ -7,6 +7,15 @@
     tools:context=".WeekViewActivity"
     android:orientation="vertical">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Daily"
+        android:textColor="@color/black"
+        android:background="@null"
+        android:layout_gravity="center"
+        android:onClick="dailyAction"
+        android:textSize="20dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

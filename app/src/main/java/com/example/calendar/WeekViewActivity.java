@@ -1,6 +1,5 @@
 package com.example.calendar;
 
-import static com.example.calendar.CalendarUtils.daysInMonthArray;
 import static com.example.calendar.CalendarUtils.monthYearFromDate;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,12 +24,11 @@ public class WeekViewActivity extends AppCompatActivity implements  CalendarAdap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_week_view);
-        iniWidgets();
-
+        initWidgets();
         setWeekView();
     }
     // find it id
-    private void iniWidgets() {
+    private void initWidgets() {
         calendarRecycleView = findViewById(R.id.calendarRecycleView);
         monthYearText = findViewById(R.id.monthYearTextView);
         eventListView = findViewById(R.id.eventListView);
@@ -39,6 +36,7 @@ public class WeekViewActivity extends AppCompatActivity implements  CalendarAdap
 
     private void setWeekView() {
         monthYearText.setText(monthYearFromDate( CalendarUtils.selectedDate));
+        //TODO: ehh>?
         ArrayList<LocalDate> days = CalendarUtils.daysInWeekArray( CalendarUtils.selectedDate);
         CalendarAdapter calendarAdapter = new CalendarAdapter(days, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
@@ -83,4 +81,10 @@ public class WeekViewActivity extends AppCompatActivity implements  CalendarAdap
         eventListView.setAdapter(eventAdapter);
 
     }
+    public void dailyAction(View view)
+    {
+        startActivity(new Intent(this, DailyCalendarActivity.class));
+    }
+
+
 }

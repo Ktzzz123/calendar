@@ -32,7 +32,7 @@ public class EvenEditActivity extends AppCompatActivity {
     public void saveEventAction(View view) {
         String eventName = edtEventName.getText().toString();
         Event newEvent = new Event(eventName,CalendarUtils.selectedDate, time);
-        Event.eventList.add(newEvent);
+        Event.eventsList.add(newEvent);
         finish();
     }
 }

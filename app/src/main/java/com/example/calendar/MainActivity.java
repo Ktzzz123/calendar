@@ -28,9 +28,15 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        initWidgets();
+        CalendarUtils.selectedDate = LocalDate.now();
+        setMonthView();
     }
-
+    private void initWidgets()
+    {
+        calendarRecycleView = findViewById(R.id.calendarRecycleView);
+        monthYearText = findViewById(R.id.monthYearTextView);
+    }
 
 
     public void previousMonthAction(View view) {
@@ -42,15 +48,11 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         CalendarUtils.selectedDate =  CalendarUtils.selectedDate.plusMonths(1);
         setMonthView();
     }
-    // find it id
-    private void iniWidgets() {
-        calendarRecycleView = findViewById(R.id.calendarRecycleView);
-        monthYearText = findViewById(R.id.monthYearTextView);
-    }
+
 
     private void setMonthView() {
         monthYearText.setText(monthYearFromDate( CalendarUtils.selectedDate));
-        ArrayList<LocalDate> daysInMonth = daysInMonthArray( CalendarUtils.selectedDate);
+        ArrayList<LocalDate> daysInMonth = daysInMonthArray();
         CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
          calendarRecycleView.setLayoutManager(layoutManager);
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
     @Override
     public void onItemClick(int position, LocalDate date) {
-        if(date == null){
+        if(date != null){
             CalendarUtils.selectedDate = date;
             setMonthView();
         }
