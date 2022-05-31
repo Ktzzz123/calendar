@@ -30,9 +30,11 @@ public class EvenEditActivity extends AppCompatActivity {
     }
 
     public void saveEventAction(View view) {
+        SQLiteManager sqLiteManager = SQLiteManager.instanceOfDataBase(this);
         String eventName = edtEventName.getText().toString();
         Event newEvent = new Event(eventName,CalendarUtils.selectedDate, time);
         Event.eventsList.add(newEvent);
+        sqLiteManager.addEventToDatabase(newEvent);
         finish();
     }
 }

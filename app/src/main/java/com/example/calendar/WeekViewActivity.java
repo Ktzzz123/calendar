@@ -1,6 +1,7 @@
 package com.example.calendar;
 
 import static com.example.calendar.CalendarUtils.monthYearFromDate;
+import static com.example.calendar.CalendarUtils.selectedDate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,12 +27,19 @@ public class WeekViewActivity extends AppCompatActivity implements  CalendarAdap
         setContentView(R.layout.activity_week_view);
         initWidgets();
         setWeekView();
+        loadFromDBtoMemory();
+
     }
     // find it id
     private void initWidgets() {
         calendarRecycleView = findViewById(R.id.calendarRecycleView);
         monthYearText = findViewById(R.id.monthYearTextView);
         eventListView = findViewById(R.id.eventListView);
+    }
+
+    private void loadFromDBtoMemory() {
+        SQLiteManager sqLiteManager =  SQLiteManager.instanceOfDataBase(this);
+        sqLiteManager.populateNoteListArray(selectedDate);
     }
 
     private void setWeekView() {

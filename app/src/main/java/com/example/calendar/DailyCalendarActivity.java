@@ -28,12 +28,18 @@ public class DailyCalendarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daily_calendar);
         initWidgets();
+        loadFromDBtoMemory();
     }
+
 
     private void initWidgets() {
         monthDayTextView = findViewById(R.id.monthDayTextView);
         dayOfWeekTextView = findViewById(R.id.dayOfWeekTextView);
         hourListView = findViewById(R.id.hourListView);
+    }
+    private void loadFromDBtoMemory() {
+        SQLiteManager sqLiteManager =  SQLiteManager.instanceOfDataBase(this);
+        sqLiteManager.populateNoteListArray(selectedDate);
     }
 
     @Override
