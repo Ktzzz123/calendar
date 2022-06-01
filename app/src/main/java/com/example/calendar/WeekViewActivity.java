@@ -21,15 +21,18 @@ public class WeekViewActivity extends AppCompatActivity implements  CalendarAdap
     private TextView monthYearText;
     private RecyclerView calendarRecycleView;
     private ListView eventListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_week_view);
         initWidgets();
+        loadFromDBtoMemory(selectedDate);
         setWeekView();
-        loadFromDBtoMemory();
 
     }
+
+
     // find it id
     private void initWidgets() {
         calendarRecycleView = findViewById(R.id.calendarRecycleView);
@@ -37,12 +40,12 @@ public class WeekViewActivity extends AppCompatActivity implements  CalendarAdap
         eventListView = findViewById(R.id.eventListView);
     }
 
-    private void loadFromDBtoMemory() {
+    private void loadFromDBtoMemory(LocalDate date) {
         SQLiteManager sqLiteManager =  SQLiteManager.instanceOfDataBase(this);
-        sqLiteManager.populateNoteListArray(selectedDate);
+        sqLiteManager.populateNoteListArray(date);
     }
 
-    private void setWeekView() {
+    public void setWeekView() {
         monthYearText.setText(monthYearFromDate( CalendarUtils.selectedDate));
         //TODO: ehh>?
         ArrayList<LocalDate> days = CalendarUtils.daysInWeekArray( CalendarUtils.selectedDate);
@@ -53,7 +56,11 @@ public class WeekViewActivity extends AppCompatActivity implements  CalendarAdap
         setEventAdapter();
 
     }
+    private void setEventAdapter() {
+        EventAdapter eventAdapter = new EventAdapter(getApplicationContext(),Event.eventsForDate(selectedDate));
+        eventListView.setAdapter(eventAdapter);
 
+    }
 
 
     @Override
@@ -83,12 +90,7 @@ public class WeekViewActivity extends AppCompatActivity implements  CalendarAdap
         setEventAdapter();
     }
 
-    private void setEventAdapter() {
-        ArrayList<Event> dailyEvents = Event.eventsForDate(CalendarUtils.selectedDate);
-        EventAdapter eventAdapter = new EventAdapter(getApplicationContext(),dailyEvents);
-        eventListView.setAdapter(eventAdapter);
 
-    }
     public void dailyAction(View view)
     {
         startActivity(new Intent(this, DailyCalendarActivity.class));

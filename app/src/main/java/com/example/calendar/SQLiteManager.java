@@ -22,9 +22,9 @@ import  java.util.Calendar;
 public class SQLiteManager extends SQLiteOpenHelper {
 
     private static SQLiteManager sqLiteManager;
-    private static final String DATABASE_NAME = "EVENT_DATABASE";
+    private static final String DATABASE_NAME = "EVENT_DATA";
     private static final int DATABASE_VERSION = 1;
-    private static final String TABLE_NAME = "EVENT_TABLE";
+    private static final String TABLE_NAME = "EVENT";
     private static final String COUNTER = "Counter";
 
 
@@ -85,27 +85,64 @@ public class SQLiteManager extends SQLiteOpenHelper {
         contentValues.put(DATE_FIELD,event.getDate().toString());
         contentValues.put(TIME_FIELD,event.getTime().toString());
         sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
-        Toast.makeText(event, "saved", Toast.LENGTH_SHORT).show();
+
     }
     public void populateNoteListArray(LocalDate date){
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 
-        //:TODO fix this bug
-        try (Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME+ " WHERE " +DATE_FIELD + " = " + date , null)) {
+        //:TODO fix bug load data from local database
+        String[] E = {ID_FIELD,NAME_FIELD,DATE_FIELD,TIME_FIELD};
+        String selection = DATE_FIELD   + "=?";
+        String[] E_agr = {date.toString()};
 
+//        try (Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME+ " WHERE " +DATE_FIELD + " = " + date , null)) {
+//            int count = result.getCount();
+//            if(count!=0){
+//                while (result.moveToNext()){
+//                    int id = result.getInt(1);
+//                    String name = result.getString(2);
+//                    String eventDate = result.getString(3);
+//                    String time = result.getString(4);
+//                    LocalDate eventDateFormatted = convertToLocalDateViaInstant(getDateFromString(eventDate));
+//                    LocalTime eventTime = convertToLocalTimeViaInstant(getDateFromString(time));
+//                    Event event = new Event(id,name,eventDateFormatted,eventTime);
+//                    Event.eventsList.add(event);
+//                }
+//            }
+            try (Cursor result = sqLiteDatabase.query(TABLE_NAME,E,selection,E_agr,null,null,null,null)) {
             if(result.getCount()!=0){
                 while (result.moveToNext()){
-                    int id = result.getInt(1);
-                    String name = result.getString(2);
-                    String eventDate = result.getString(3);
-                    String time = result.getString(4);
-                    LocalDate eventDateFormatted = convertToLocalDateViaInstant(getDateFromString(eventDate));
-                    LocalTime eventTime = convertToLocalTimeViaInstant(getDateFromString(time));
-                    Event event = new Event(id,name,eventDateFormatted,eventTime);
-                    Event.eventsList.add(event);
+                        int id = result.getInt(0);
+                        String name = result.getString(1);
+                        String eventDate = result.getString(2);
+                        String time = result.getString(3);
+                        LocalDate eventDateFormatted = LocalDate.parse(eventDate);
+                        LocalTime eventTime = LocalTime.parse(time);
+                        Event event = new Event(id,name,eventDateFormatted,eventTime);
+                        Event.eventsList.add(event);
                 }
+
+//
             }
         }
+
+//        try (Cursor result = sqLiteDatabase.query(TABLE_NAME,E,selection,E_agr,null,null,null,null)) {
+//            if(result.getCount()!=0){
+//                while (result.moveToNext()){
+////                    if(result.getInt(0)>Event.eventsList.size()){
+//                        int id = result.getInt(0);
+//                        String name = result.getString(1);
+//                        String eventDate = result.getString(2);
+//                        String time = result.getString(3);
+//                        LocalDate eventDateFormatted = LocalDate.parse(eventDate);
+//                        LocalTime eventTime = LocalTime.parse(time);
+//                        Event event = new Event(id,name,eventDateFormatted,eventTime);
+//                        Event.eventsList.add(event);
+////                    }
+//
+//                }
+//            }
+//        }
 
     }
 
@@ -116,7 +153,6 @@ public class SQLiteManager extends SQLiteOpenHelper {
         contentValues.put(NAME_FIELD,event.getName());
         contentValues.put(DATE_FIELD,event.getDate().toString());
         contentValues.put(TIME_FIELD,event.getTime().toString());
-
         sqLiteDatabase.update(TABLE_NAME,contentValues, ID_FIELD + " =? ",new String[]{String.valueOf(event.getId())});
     }
 

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
     private final ArrayList<LocalDate> days;
     private final OnItemListener onItemListener;
+    private static final LocalDate dateNow = LocalDate.now();
 
     public CalendarAdapter(ArrayList<LocalDate> days, OnItemListener onItemListener) {
         this.days = days;
@@ -39,11 +40,16 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         holder.dayOfMonth.setText(String.valueOf(date.getDayOfMonth()));
         if(date.equals(CalendarUtils.selectedDate))
             holder.parentView.setBackgroundColor(Color.LTGRAY);
-
         if(date.getMonth().equals(CalendarUtils.selectedDate.getMonth()))
             holder.dayOfMonth.setTextColor(Color.BLACK);
         else
             holder.dayOfMonth.setTextColor(Color.LTGRAY);
+        final LocalDate dateNow = LocalDate.now();
+        for (int i = 0;i<=days.size();i++)
+        {
+            if(dateNow.equals(days.get(position)))
+                holder.dayOfMonth.setTextColor(Color.RED);
+        }
 
     }
 

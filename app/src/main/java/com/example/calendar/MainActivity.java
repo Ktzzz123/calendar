@@ -2,12 +2,14 @@ package com.example.calendar;
 
 import static com.example.calendar.CalendarUtils.daysInMonthArray;
 import static com.example.calendar.CalendarUtils.monthYearFromDate;
+import static com.example.calendar.CalendarUtils.selectedDate;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -18,11 +20,12 @@ import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener{
     private TextView monthYearText;
     private RecyclerView calendarRecycleView;
-
+    private static final LocalDate dateNow = LocalDate.now();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +35,14 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         CalendarUtils.selectedDate = LocalDate.now();
         setMonthView();
     }
+
+
     private void initWidgets()
     {
         calendarRecycleView = findViewById(R.id.calendarRecycleView);
         monthYearText = findViewById(R.id.monthYearTextView);
     }
+
 
 
     public void previousMonthAction(View view) {
